@@ -8,4 +8,5 @@ load_dotenv()
 
 API_HOST = os.environ['API_HOST']
 VISION_PROJECT = os.environ['VISION_PROJECT']
-LLM_PROJECT = os.environ['LLM_PROJECT']
+RAG_PROJECT = os.environ['RAG_PROJECT']
+API_KEY = os.environ['API_KEY']

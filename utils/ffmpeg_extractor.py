@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Union
 
 
-def extract_audio(input_video_path: str, output_audio_path: str) -> None:
+async def extract_audio(input_video_path: str, output_audio_path: str) -> None:
     """
     Извлекает аудио из видео и сохраняет его в формате MP3.
 
@@ -18,7 +18,7 @@ def extract_audio(input_video_path: str, output_audio_path: str) -> None:
         print(f"Ошибка при извлечении аудио: {e}")
 
 
-def extract_frames(input_video_path: str, output_folder: Union[str, Path], interval_seconds: int | float) -> None:
+async def extract_frames(input_video_path: str, output_folder: Union[str, Path], interval_seconds: int | float) -> None:
     """
     Извлекает кадры из видео с заданной периодичностью.
 
@@ -45,14 +45,14 @@ def extract_frames(input_video_path: str, output_folder: Union[str, Path], inter
         print(f"Ошибка при извлечении кадров: {e}")
 
 
-# Пример использования функций
-input_video: str = 'video.mp4'  # Путь к видеофайлу
-output_audio: str = 'audio.mp3'  # Путь для сохранения MP3-файла
-output_frames_folder: Path = Path('frames')  # Папка для сохранения кадров
-interval_seconds: int = 60  # Интервал между кадрами (например, каждые 10 секунд)
-
-# Извлекаем аудио
-extract_audio(input_video, output_audio)
-
-# Извлекаем кадры каждые 10 секунд
-extract_frames(input_video, output_frames_folder, interval_seconds)
+# # Пример использования функций
+# input_video: str = 'video.mp4'  # Путь к видеофайлу
+# output_audio: str = 'audio.mp3'  # Путь для сохранения MP3-файла
+# output_frames_folder: Path = Path('frames')  # Папка для сохранения кадров
+# interval_seconds: int = 60  # Интервал между кадрами (например, каждые 10 секунд)
+#
+# # Извлекаем аудио
+# extract_audio(input_video, output_audio)
+#
+# # Извлекаем кадры каждые 10 секунд
+# extract_frames(input_video, output_frames_folder, interval_seconds)
