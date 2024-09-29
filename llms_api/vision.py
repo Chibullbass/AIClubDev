@@ -44,10 +44,3 @@ async def vision_query(frames_dir: str, api_host: str, project_name: str, api_ke
 
 
     return dict(sorted(vision_answers.items()))
-
-
-import asyncio
-a = asyncio.run(vision_query(
-    frames_dir='frames', api_host=API_HOST, project_name=VISION_PROJECT, api_key=API_KEY, video_length=32
-))
-print(a)
