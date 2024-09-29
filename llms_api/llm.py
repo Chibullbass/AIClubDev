@@ -7,8 +7,6 @@ async def llm_query(
         api_host: str,
         project: str,
         frame_data: dict,
-        video_description: str,
-        video_title: str
 ) -> str:
     '''
     Основной обработчик
@@ -24,7 +22,7 @@ async def llm_query(
     async with aiohttp.ClientSession() as session:
 
         data = {
-            'question': f'Below is information about the video and tags for describing the video, based on this, assign a video tag',
+            'question': frame_data,
             'system': f'{frame_data}'
         }
 
@@ -35,5 +33,10 @@ async def llm_query(
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json"
             },
+            data=data
 
         )
+        answer = await responce.json()
+
+        return answer
+

@@ -1,15 +1,14 @@
 import os
 import asyncio
 
-from config import API_HOST, API_KEY, VISION_PROJECT
+from config import API_HOST, API_KEY, VISION_PROJECT, RAG_PROJECT
 from utils.ffmpeg_extractor import extract_audio, extract_frames
 from utils.video_len_calc import get_length
-from utils.csv_reader import extract_csv_data
 from llms_api.vision import vision_query
+from llms_api.llm import llm_query
 
 
 async def main():
-    test_data = await extract_csv_data('train_data_categories.csv')
     while True:
         videos = os.listdir('videos')
         if len(videos) > 0:
@@ -32,9 +31,15 @@ async def main():
                     video_length=video_length
                 )
 
-                print(vision_responce)
+                llmQuery = llm_query(
+                    api_key=API_KEY,
+                    api_host=API_HOST,
+                    project=RAG_PROJECT,
+                    frame_data=vision_responce
+                )
 
-            break
+                return llmQuery
+
         else:
             print('В каталоге нету видео.')
 
