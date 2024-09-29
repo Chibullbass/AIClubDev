@@ -2,9 +2,12 @@ import os
 import asyncio
 from utils.ffmpeg_extractor import extract_audio, extract_frames
 from utils.fps_calculator import calc_fps
+from utils.csv_reader import extract_csv_data
 
 
 async def main():
+    test_data = await extract_csv_data('train_data_categories.csv')
+    print(test_data)
     while True:
         videos = os.listdir('videos')
         if len(videos) > 0:
@@ -19,7 +22,9 @@ async def main():
                     interval_seconds=interval
                 )
 
-                break
+
+
+            break
         else:
             print('В каталоге нету видео.')
 

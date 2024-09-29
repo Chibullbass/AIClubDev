@@ -14,14 +14,6 @@ async def calc_fps(filename: str) -> int:
         stderr=subprocess.STDOUT)
 
     video_len = float(result.stdout)
+    print(video_len)
 
-    if video_len <= 30:
-        return 1
-    elif video_len <= 300:
-        return 10
-    elif video_len <= 600:
-        return 60
-    elif video_len <= 3600:
-        return 120
-    else:
-        return 300
+    return round(video_len/10)
