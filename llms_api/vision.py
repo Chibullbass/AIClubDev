@@ -9,6 +9,7 @@ from config import API_HOST, VISION_PROJECT, API_KEY
 async def vision_query(frames_dir: str, api_host: str, project_name: str, api_key: str, video_length: int) -> dict[int: str, ...]:
     """
     Отправка запроса vision модели для обработки кадров видео
+    :param video_length: длина видео
     :param frames_dir: каталог с кадрами
     :param api_host: адрес rest ai
     :param project_name: название проекта vision модели в rest ai
@@ -16,8 +17,8 @@ async def vision_query(frames_dir: str, api_host: str, project_name: str, api_ke
     :return:
     """
     vision_answers = {}
-    for frame in os.listdir('../frames'):
-        vis = open(f'../frames/{frame}', 'rb')
+    for frame in os.listdir(frames_dir):
+        vis = open(f'{frames_dir}/{frame}', 'rb')
 
             #  Отправка запроса к RestAI
         async with aiohttp.ClientSession() as session:
@@ -33,12 +34,11 @@ async def vision_query(frames_dir: str, api_host: str, project_name: str, api_ke
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json"
                 },
-                url=f'{api_host}projects/{VISION_PROJECT}/question',
+                url=f'{api_host}projects/{project_name}/question',
                 ssl=False,
                 data=json.dumps(data)
             )
             json_responce = await responce.json()
-            print(json_responce)
             vision_answers[int(frame[-8:-4])] = json_responce.get('answer')
             print(int(frame[-8:-4]), responce.status)
 
