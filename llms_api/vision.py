@@ -1,6 +1,6 @@
 import json
 import os
-
+import base64
 import aiohttp
 
 from config import API_HOST, VISION_PROJECT, API_KEY
@@ -22,7 +22,7 @@ async def vision_query(frames_dir: str, api_host: str, project_name: str, api_ke
 
             #  Отправка запроса к RestAI
         async with aiohttp.ClientSession() as session:
-            import base64
+
 
             data = {
                 'question': f'You virtual assistant you must describe photos in detail.Frames were taken from a {video_length} second long video,at intervals of 10 percent of the video length',
@@ -41,6 +41,7 @@ async def vision_query(frames_dir: str, api_host: str, project_name: str, api_ke
             json_responce = await responce.json()
             vision_answers[int(frame[-8:-4])] = json_responce.get('answer')
             print(int(frame[-8:-4]), responce.status)
+            os.remove(f'{frames_dir}/{frame}')
 
 
     return dict(sorted(vision_answers.items()))

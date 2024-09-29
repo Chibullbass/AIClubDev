@@ -1,11 +1,11 @@
 import subprocess
 
 
-async def calc_fps(filename: str) -> int:
+async def get_length(filename: str) -> int:
     """
-    Рассчет частоты сохранения кадров
+    рассчет длины видео
     :param filename: Название файла
-    :return: интервал между кадрами видео
+    :return:
     """
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
@@ -13,7 +13,7 @@ async def calc_fps(filename: str) -> int:
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
 
-    video_len = float(result.stdout)
-    print(video_len)
+    video_len = round(float(result.stdout))
 
-    return round(video_len/10)
+    return video_len
+
