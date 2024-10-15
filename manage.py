@@ -1,11 +1,12 @@
 import os
 import asyncio
 
-from config import API_HOST, API_KEY, VISION_PROJECT, RAG_PROJECT
+from config import API_HOST, API_KEY, RAG_PROJECT, VISION_PROJECT, LLM_GENERATOR_PROMT, LLM_FILTER_PROMT, LLM_SORTER_PROMT
 from utils.ffmpeg_extractor import extract_audio, extract_frames
 from utils.video_len_calc import get_length
 from llms_api.vision import vision_query
 from llms_api.llm import llm_query
+from utils.text_processor import process_text
 
 
 async def main():
@@ -31,12 +32,17 @@ async def main():
                     video_length=video_length
                 )
 
-                llmQuery = llm_query(
+                result_text = await process_text(vision_responce)
+
+                llmQuery = await llm_query(
                     api_key=API_KEY,
                     api_host=API_HOST,
                     project=RAG_PROJECT,
-                    frame_data=vision_responce
+                    text_data=result_text,
+                    query_promt=LLM_GENERATOR_PROMT
                 )
+                print(llmQuery)
+
 
                 return llmQuery
 

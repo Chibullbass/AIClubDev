@@ -1,4 +1,5 @@
-from config import API_KEY, API_HOST, RAG_PROJECT
+from config import API_KEY, API_HOST
+import json
 import aiohttp
 
 
@@ -6,37 +7,35 @@ async def llm_query(
         api_key: str,
         api_host: str,
         project: str,
-        frame_data: dict,
+        text_data: str,
+        query_promt: str,
 ) -> str:
     '''
-    Основной обработчик
+    Основной обработчик, в функции входит: Генерация, сортировка и фильтрация тэгов.
     :param api_key: ключ доступа к RestAI
     :param api_host: адрес RestAI
     :param project: название проекта с моделью
-    :param frame_data: данные о фрагментах видео
-    :param video_description: описание видео
-    :param video_title: название видео
+    :param text_data: данные о фрагментах видео
+    :param query_promt: систем промт для запроса
     :return:
     '''
 
     async with aiohttp.ClientSession() as session:
-
         data = {
-            'question': frame_data,
-            'system': f'{frame_data}'
+            'question': text_data,
+            'system': query_promt
         }
 
+
         responce = await session.post(
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            },
             url=f'{api_host}projects/{project}/question',
             ssl=False,
-            headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json"
-            },
-            data=data
-
+            data=json.dumps(data)
         )
-        answer = await responce.json()
+        result_text = await responce.json()
 
-        return answer
-
+        return result_text["answer"]
