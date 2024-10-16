@@ -34,17 +34,25 @@ async def main():
 
                 result_text = await process_text(vision_responce)
 
-                llmQuery = await llm_query(
+                tag_generator_responce = await llm_query(
                     api_key=API_KEY,
                     api_host=API_HOST,
                     project=RAG_PROJECT,
                     text_data=result_text,
                     query_promt=LLM_GENERATOR_PROMT
                 )
-                print(llmQuery)
 
+                sorted_tags_responce = await llm_query(
+                    api_key=API_KEY,
+                    api_host=API_HOST,
+                    project=RAG_PROJECT,
+                    text_data=tag_generator_responce,
+                    query_promt=LLM_SORTER_PROMT
+                )
 
-                return llmQuery
+                print(sorted_tags_responce)
+
+                return sorted_tags_responce
 
         else:
             print('В каталоге нету видео.')
